@@ -1,0 +1,54 @@
+{# [START form] #}
+
+{% extends "base.html" %}
+{% csrf_token %}
+{% block content %}
+<h3>{{action}} book</h3>
+
+<form method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+    <label for="title">Event Title [within 25 words]</label>
+    <input type="text" name="event_title" id="event_title" value="{{event.event_title}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="Holderid">Holder ID [max 10 number]</label>
+    <input type="text" name="holder_id" id="holder_id" value="{{event.holder_id}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="HoldDate">Date</label>
+      <input type="date" name="e_date" id="e_date" value="{{event.e_date| default_if_none:'2024-01-01'}}" min="2018-01-01" max="2030-12-31" class="form-control" />
+  </div>
+  <div class="form-group">
+    <label for="capacity">Capacity</label>
+        <input type="number" name="capacity" id="capacity" min ="20" max ="250" value="{{event.capacity|default_if_none:50}}" class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="e_detail" id="e_detail" class="form-control">{{event.e_detail}}</textarea>
+  </div>
+  <div class="form-group">
+    <label for="categoty">Category </label>
+    <select name="cat_category" id="cat_category" style="width:120px;height:30px;">
+　　　　<option value="Career" {% if event.cat_category == 'Career' %}selected{% endif %}>Career</option>
+        <option value="Social" {% if event.cat_category == 'Social' %}selected{% endif %}>Social</option>
+        <option value="Sport" {% if event.cat_category == 'Sport' %}selected{% endif %}>Sport</option>
+        <option value="Panel" {% if event.cat_category == 'Panel' %}selected{% endif %}>Panel</option>
+　　</select>
+  </div>
+  <div class="form-group">
+    <label for="image">Cover Image</label>
+    <input type="file" name="image" id="image" class="form-control"/>
+  </div>
+
+  <div class="form-group hidden">
+    <label for="imageUrl">Cover Image URL</label>
+    <input type="text" name="imageUrl" id="imageUrl" value= "None" class="form-control"/>
+  </div>
+  <button type="submit" input type="submit" class="btn btn-success" value="Submit">Save</button>
+</form>
+
+{% endblock %}
+{# [END form] #}

@@ -11,7 +11,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import mysql.connector
 
+import io
+import os
+from urllib.parse import urlparse
+import google.auth
+"""
+import environ
+import google.auth
+from google.cloud import secretmanager
+"""
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'events'
 ]
 
 MIDDLEWARE = [
@@ -73,11 +85,16 @@ WSGI_APPLICATION = 'Eventplanning.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# [START cloudrun_django_database_config]
+# Use django-environ to parse the connection string
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'event_info',
+        'USER': 'root',
+        'PASSWORD': 'janisme124',
+        'HOST' : 'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -122,3 +139,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+         'rest_framework.permissions.AllowAny',
+    ]
+}
+
