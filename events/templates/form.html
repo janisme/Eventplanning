@@ -1,0 +1,48 @@
+{# [START form] #}
+
+{% extends "base.html" %}
+{% csrf_token %}
+{% block content %}
+<h3>{{action}} book</h3>
+
+<form method="post" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="title">Event ID</label>
+    <input type="text" name="event_id" id="event_id" value="{{event_id}}" class="form-control"/>
+  </div>
+    <div class="form-group">
+    <label for="title">Event Title</label>
+    <input type="text" name="event_title" id="event_title" value="{{event_title}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="author">Holder ID</label>
+    <input type="text" name="holder_id" id="holder_id" value="{{holder_id}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="publishedDate">Date</label>
+    <input type="text" name="e_date" id="e_date" value="{{e_date}}" class="form-control"/>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="e_detail" id="e_detail" class="form-control">{{e_detail}}</textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="image">Cover Image</label>
+    <input type="file" name="image" id="image" class="form-control"/>
+  </div>
+
+  <div class="form-group hidden">
+    <label for="imageUrl">Cover Image URL</label>
+    <input type="text" name="imageUrl" id="imageUrl" value= "None" class="form-control"/>
+  </div>
+
+  <button type="submit" input type="submit" class="btn btn-success" value="Submit">Save</button>
+</form>
+
+{% endblock %}
+{# [END form] #}
