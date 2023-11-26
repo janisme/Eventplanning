@@ -87,16 +87,38 @@ WSGI_APPLICATION = 'Eventplanning.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # [START cloudrun_django_database_config]
 # Use django-environ to parse the connection string
+
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'event_info',
         'USER': 'root',
-        'PASSWORD': 'janisme124',
+        'PASSWORD': 'janisme124', #janisme124/local
         'HOST' : 'localhost',
-        'PORT':'3306',
+        'PORT':'3306'
     }
 }
+
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'mysql.connector.django',
+        'HOST':'cloudsql/eplanner-event-mircro:us-central1:eventdb/event_info',
+        'NAME': 'event_info',
+        'USER': 'root',
+        'PASSWORD': 'QK<Q\x1e.,Gz=%Bx',
+        'PORT':'3306'
+    }
+}
+'''
+
+
+#DATABASES = {"default": env.db()}
+
+# If the flag as been set, configure to use proxy
+if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
+    DATABASES["default"]["HOST"] = "127.0.0.1"
+    DATABASES["default"]["PORT"] = 3306
 
 
 # Password validation
