@@ -19,6 +19,7 @@ def init_connection_pool() -> sqlalchemy.engine.base.Engine:
 def migrate_db(db: sqlalchemy.engine.base.Engine) -> None:
     """Creates the `votes` table if it doesn't exist."""
     with db.connect() as conn:
+        pass
         """
         conn.execute(
             sqlalchemy.text(
@@ -26,6 +27,7 @@ def migrate_db(db: sqlalchemy.engine.base.Engine) -> None:
             )
         )
         """
+
         conn.execute(
             sqlalchemy.text(
                 "CREATE TABLE IF NOT EXISTS events_event "
@@ -42,6 +44,7 @@ def migrate_db(db: sqlalchemy.engine.base.Engine) -> None:
             )
         )
         conn.commit()
+
 
 #initialize db when run the app
 def initialize_database():
