@@ -19,9 +19,9 @@ from urllib.parse import urlparse
 import google.auth
 
 
-#import environ
-#import google.auth
-#from google.cloud import secretmanager
+import environ
+import google.auth
+from google.cloud import secretmanager
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,10 +34,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 #In cloud env
-#env = environ.Env(DEBUG=(bool, True))
-#env_file = os.path.join(BASE_DIR, ".env")
+env = environ.Env(DEBUG=(bool, True))
+env_file = os.path.join(BASE_DIR, ".env")
 #In cloud env
-"""
 # Attempt to load the Project ID into the environment, safely failing on error.
 try:
     _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
@@ -77,7 +76,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
 # [START cloudrun_django_csrf]
-"""
+
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -87,6 +86,7 @@ SECRET_KEY = 'django-insecure-e*0ql2=v0u)cr7kyh^s7_fq7zp-nj1sg40r4ghl!oexwpr)nj9
 DEBUG = True #local
 
 ALLOWED_HOSTS = ['event-service-xwpcijvmmq-uc.a.run.app',
+                'event-service-json-xwpcijvmmq-uc.a.run.app',
                  '127.0.0.1']
 
 
@@ -140,7 +140,7 @@ WSGI_APPLICATION = 'Eventplanning.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # [START cloudrun_django_database_config]
 # Use django-environ to parse the connection string
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
@@ -151,9 +151,9 @@ DATABASES = {
         'PORT':'3306'
     }
 }
-
+"""
 #In cloud env
-#DATABASES = {"default": env.db()}
+DATABASES = {"default": env.db()}
 
 #In cloud env
 # If the flag as been set, configure to use proxy

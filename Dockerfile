@@ -1,4 +1,4 @@
-LABEL authors="jannetchen_json_cloud"
+#LABEL authors="jannetchen_json_cloud"
 FROM python:3.9
 
 ENV APP_HOME /app
