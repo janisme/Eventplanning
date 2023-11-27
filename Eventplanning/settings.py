@@ -17,11 +17,12 @@ import io
 import os
 from urllib.parse import urlparse
 import google.auth
-"""
-import environ
-import google.auth
-from google.cloud import secretmanager
-"""
+
+
+#import environ
+#import google.auth
+#from google.cloud import secretmanager
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,13 +33,61 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+#In cloud env
+#env = environ.Env(DEBUG=(bool, True))
+#env_file = os.path.join(BASE_DIR, ".env")
+#In cloud env
+"""
+# Attempt to load the Project ID into the environment, safely failing on error.
+try:
+    _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
+except google.auth.exceptions.DefaultCredentialsError:
+    pass
+
+if os.path.isfile(env_file):
+    # Use a local secret file, if provided
+
+    env.read_env(env_file)
+# [START_EXCLUDE]
+elif os.getenv("TRAMPOLINE_CI", None):
+    # Create local settings if running with CI, for unit testing //not setting sqlite3
+
+    placeholder = (
+        f"SECRET_KEY=a\n"
+        "GS_BUCKET_NAME=None\n"
+        f"DATABASE_URL=sqlite://{os.path.join(BASE_DIR, 'db.sqlite3')}"
+    )
+    env.read_env(io.StringIO(placeholder))
+# [END_EXCLUDE]
+elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+    # Pull secrets from Secret Manager
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+
+    client = secretmanager.SecretManagerServiceClient()
+    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
+    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception("No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.")
+# [END cloudrun_django_secret_config]
+SECRET_KEY = env("SECRET_KEY")
+
+DEBUG = env("DEBUG")
+
+# [START cloudrun_django_csrf]
+"""
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e*0ql2=v0u)cr7kyh^s7_fq7zp-nj1sg40r4ghl!oexwpr)nj9'
+SECRET_KEY = 'django-insecure-e*0ql2=v0u)cr7kyh^s7_fq7zp-nj1sg40r4ghl!oexwpr)nj9' #local
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True #local
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['event-service-xwpcijvmmq-uc.a.run.app',
+                 '127.0.0.1']
 
 
 # Application definition
@@ -51,6 +100,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'Eventplanning',
     'events'
 ]
 
@@ -96,33 +146,22 @@ DATABASES = {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'event_info',
         'USER': 'root',
-        'PASSWORD': 'janisme124', #janisme124/local
+        'PASSWORD': 'db12345', #janisme124/local
         'HOST' : 'localhost',
         'PORT':'3306'
     }
 }
 
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'mysql.connector.django',
-        'HOST':'cloudsql/eplanner-event-mircro:us-central1:eventdb/event_info',
-        'NAME': 'event_info',
-        'USER': 'root',
-        'PASSWORD': 'QK<Q\x1e.,Gz=%Bx',
-        'PORT':'3306'
-    }
-}
-'''
-
-
+#In cloud env
 #DATABASES = {"default": env.db()}
 
+#In cloud env
 # If the flag as been set, configure to use proxy
+"""
 if os.getenv("USE_CLOUD_SQL_AUTH_PROXY", None):
     DATABASES["default"]["HOST"] = "127.0.0.1"
     DATABASES["default"]["PORT"] = 3306
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

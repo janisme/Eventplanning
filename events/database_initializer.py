@@ -36,7 +36,7 @@ def migrate_db(db: sqlalchemy.engine.base.Engine) -> None:
                 "holder_id varchar(10),"
                 "e_date date,"
                 "e_detail TINYTEXT,"
-                " e_complete boolean default false,"
+                " e_complete boolean default False,"
                 #"place varchar(10),"
                 #"cat_indoor boolean,"
                 "cat_category varchar(10) check ( cat_category in ('Career','Social','Sport','Panel','Unknow')),"
@@ -44,6 +44,7 @@ def migrate_db(db: sqlalchemy.engine.base.Engine) -> None:
             )
         )
         conn.commit()
+
 
 
 #initialize db when run the app
