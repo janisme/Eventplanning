@@ -31,6 +31,7 @@ def create(request):
         data=request.data
         print(data)
         date = datetime.strptime(data['e_date'], '%Y-%m-%d').date()
+        """
         cat_mapping = {
             1: "Career",
             2: "Social",
@@ -38,13 +39,15 @@ def create(request):
             4: "Panel",
         }
         cat = cat_mapping.get(data['cat_category'], "Career")
+        """
+
 
         event_id = eventresource.create(event_title=data[ 'event_title'],
                                         date=date,
                                         capacity=data['capacity'],
                                         holder_id=data['holder_id'],
                                         e_detail=data['e_detail'],
-                                        cat=cat,
+                                        cat=data['cat_category'],
                                         db =db)
         print(event_id)
 
@@ -63,7 +66,7 @@ def view(request, event_id):
         Complete = 'YES'
     else:
         Complete = 'No...'
-    return render(request,'view.html', {'event': event,'Complete':Complete})
+    return render(request,'view.html', {'event': event,'Complete':Complete })
 #put is not working
 @api_view(['GET','POST','PUT'])
 def edit_event(request,event_id):
@@ -75,24 +78,26 @@ def edit_event(request,event_id):
         data = request.data
         print(data)
         date = datetime.strptime(data['e_date'], '%Y-%m-%d').date()
+        """
         cat_mapping = {
             1: "Career",
             2: "Social",
             3: "Sport",
             4: "Panel",
         }
+        cat = cat_mapping.get(data['cat_category'], "Career")
+        """
         if 'state' in data:
             complete = True
         else:
             complete =False
-        cat = cat_mapping.get(data['cat_category'], "Career")
         event = eventresource.edit_event(event_id = event_id,
                                         event_title=data[ 'event_title'],
                                         date=date,
                                         capacity=data['capacity'],
                                         holder_id=data['holder_id'],
                                         e_detail=data['e_detail'],
-                                        cat=cat,
+                                        cat=data['cat_category'],
                                         e_complete=complete,
                                         db =db)
         return HttpResponseRedirect(reverse("home"))
@@ -100,24 +105,26 @@ def edit_event(request,event_id):
         data = request.data
         print(data)
         date = datetime.strptime(data['e_date'], '%Y-%m-%d').date()
+        """
         cat_mapping = {
             1: "Career",
             2: "Social",
             3: "Sport",
             4: "Panel",
         }
+        cat = cat_mapping.get(data['cat_category'], "Career")
+        """
         if 'e_complete' in data:
             complete = True
         else:
-            complete =False
-        cat = cat_mapping.get(data['cat_category'], "Career")
+            complete = False
         event = eventresource.edit_event(event_id = event_id,
                                         event_title=data[ 'event_title'],
                                         date=date,
                                         capacity=data['capacity'],
                                         holder_id=data['holder_id'],
                                         e_detail=data['e_detail'],
-                                        cat=cat,
+                                        cat=data['cat_category'],
                                         e_complete=complete,
                                         db =db)
         return HttpResponseRedirect(reverse("home"))

@@ -28,8 +28,8 @@ class eventresource():
     def create(event_title, date, e_detail, capacity, holder_id, cat,
                db: sqlalchemy.engine.base.Engine) -> int:
         stmt = sqlalchemy.text(
-            "INSERT INTO events_event (event_title, e_date, capacity, holder_id, e_detail,cat_category) "
-            "VALUES (:event_title, :e_date, :capacity, :holder_id, :e_detail,:cat_category)"
+            "INSERT INTO events_event (event_title, e_date, capacity, holder_id, e_detail,cat_category,e_complete) "
+            "VALUES (:event_title, :e_date, :capacity, :holder_id, :e_detail,:cat_category, False)"
         )
         with db.connect() as conn:
             result = conn.execute(stmt, {"event_title":event_title,
