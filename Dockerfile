@@ -8,8 +8,8 @@ ENV INSTANCE_CONNECTION_NAME=eplanner-event-mircro:us-central1:eventdb
 ENV DB_PORT=3306
 ENV DB_NAME=event_info
 ENV DB_USER=root
-ENV DB_PASS=janisme124
-ENV DATABASE_URL=mysql://root:janisme124@//cloudsql/eplanner-event-mircro:us-central1:eventdb/event_info
+ENV DB_PASS=db12345
+ENV DATABASE_URL=mysql://root:db12345@//cloudsql/eplanner-event-mircro:us-central1:eventdb/event_info
 ENV SECRET_KEY=BGjZehTWFqogqfJfXVDhXpsGleVDjmQXhrfmcBLILXrFFFNhvn
 
 

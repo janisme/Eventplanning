@@ -22,8 +22,6 @@ import environ
 
 import google.auth
 from google.cloud import secretmanager
-#import pymysql
-#pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,9 +72,6 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
 
 # [START cloudrun_django_csrf]
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-e*0ql2=v0u)cr7kyh^s7_fq7zp-nj1sg40r4ghl!oexwpr)nj9'
