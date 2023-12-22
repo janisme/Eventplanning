@@ -54,7 +54,7 @@ class eventresource():
 
         return result
 
-    def delete_event(event_id, db: sqlalchemy.engine.base.Engine) -> int:
+    def delete_event(event_id, db: sqlalchemy.engine.base.Engine) -> Event:
         stmt = sqlalchemy.text(
             "DELETE FROM events_event where event_id = :id"
         )
@@ -65,7 +65,8 @@ class eventresource():
                 stmt, {"id": id}
             )
             conn.commit()
-        return event_id
+            print(result)
+        return result
 
     def edit_event(event_id, event_title, date, e_detail, capacity, holder_id, cat,e_complete,
            db: sqlalchemy.engine.base.Engine) -> Event:

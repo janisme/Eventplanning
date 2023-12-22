@@ -139,9 +139,7 @@ def edit_event(request,event_id):
 
 @api_view(['DELETE'])
 def delete(request,event_id):
+    
     eventresource.delete_event(event_id=event_id, db=db)
-
-    return Response({"message": f"Event with ID {event_id} deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-
-
-
+    
+    return Response({"message": f"Event with ID {event_id} deleted successfully."}, status=status.HTTP_200_OK)
