@@ -1,15 +1,9 @@
 from rest_framework import serializers
-from .models import Event
+from .models import Event  # Adjust this import based on your actual model location
 
-class eventserializer(serializers.ModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields =[
-            'event_id',
-            'event_title',
-            'holder_id',
-            'e_date',
-            #'capacity',
-            #'e_complete',
-            'e_detail',
-        ]
+        fields = '__all__'
+
+    # Add any additional validation or customization here if needed

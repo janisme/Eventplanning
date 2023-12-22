@@ -1,8 +1,6 @@
 from events.models import Event
 
 import sqlalchemy
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
 class eventresource():
 
@@ -28,8 +26,8 @@ class eventresource():
     def create(event_title, date, e_detail, capacity, holder_id, cat,
                db: sqlalchemy.engine.base.Engine) -> int:
         stmt = sqlalchemy.text(
-            "INSERT INTO events_event (event_title, e_date, capacity, holder_id, e_detail,cat_category) "
-            "VALUES (:event_title, :e_date, :capacity, :holder_id, :e_detail,:cat_category)"
+            "INSERT INTO events_event (event_title, e_date, capacity, holder_id, e_detail,cat_category,e_complete) "
+            "VALUES (:event_title, :e_date, :capacity, :holder_id, :e_detail,:cat_category, False)"
         )
         with db.connect() as conn:
             result = conn.execute(stmt, {"event_title":event_title,
@@ -56,7 +54,7 @@ class eventresource():
 
         return result
 
-    def delete_event(event_id, db: sqlalchemy.engine.base.Engine) -> int:
+    def delete_event(event_id, db: sqlalchemy.engine.base.Engine) -> Event:
         stmt = sqlalchemy.text(
             "DELETE FROM events_event where event_id = :id"
         )
@@ -67,7 +65,8 @@ class eventresource():
                 stmt, {"id": id}
             )
             conn.commit()
-        return event_id
+            print(result)
+        return result
 
     def edit_event(event_id, event_title, date, e_detail, capacity, holder_id, cat,e_complete,
            db: sqlalchemy.engine.base.Engine) -> Event:
